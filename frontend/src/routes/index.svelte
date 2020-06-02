@@ -13,6 +13,7 @@
 	}
 	input{
 		margin-right: 20px;
+		margin-bottom: 1rem;
 	}
 </style>
 
@@ -21,9 +22,10 @@
 </svelte:head>
 
 <h1>Welcome to My Token</h1>
+<p>Check your token balance</p>
 
 <form on:submit|preventDefault={login}>
 	<input type="text" bind:value={user}/>
-	<input class="button" type="submit" value="sign in"/>
+	<input class="button" type="submit" value="sign in" />
 </form>
 

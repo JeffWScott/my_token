@@ -90,7 +90,7 @@
 	<title>{`${user}'s Tokens`}</title>
 </svelte:head>
 
-<h1>{`Hello ${user}`}</h1>
+<h1>{`Hello ${user}!`}</h1>
 <h2>Token Balance: {value}</h2>
 
 <form on:submit|preventDefault={send}>
