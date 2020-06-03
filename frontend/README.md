@@ -1,5 +1,5 @@
-The creation of these files is covered in Part 3 of the tutorial series:
-
+The creation of the files in frontend is covered in Part 3a and b of the tutorial series:
+https://blog.lamden.io/a-frontend-for-your-smart-contract-29381108a5d5
 
 ### Running the project
 

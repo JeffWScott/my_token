@@ -1,7 +1,7 @@
 <script>
 	import { goto } from '@sapper/app';
 
-	let user = ""
+	let user = "";
 
 	const login = () => {
 		goto('/users/' + user);
