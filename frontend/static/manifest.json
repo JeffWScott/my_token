@@ -1,8 +1,8 @@
 {
-	"background_color": "#ffffff",
-	"theme_color": "#333333",
-	"name": "TODO",
-	"short_name": "TODO",
+	"background_color": "#A1A0C926",
+	"theme_color": "#5F5E9D",
+	"name": "My Token",
+	"short_name": "My Token Tutorial Project",
 	"display": "minimal-ui",
 	"start_url": "/",
 	"icons": [

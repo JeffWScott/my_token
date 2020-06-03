@@ -2,8 +2,9 @@
 	import { goto } from '@sapper/app';
 
 	let user = ""
-	const login = async () => {
-		if (user) await goto(`/users/${user.toLowerCase()}`);
+
+	const login = () => {
+		goto('/users/' + user);
 	}
 </script>
 
@@ -18,14 +19,13 @@
 </style>
 
 <svelte:head>
-	<title>My Token Website</title>
+	<title>My Token</title>
 </svelte:head>
 
 <h1>Welcome to My Token</h1>
-<p>Check your token balance</p>
 
 <form on:submit|preventDefault={login}>
-	<input type="text" bind:value={user}/>
+	<p>Check your token balance</p>
+	<input type="text" bind:value={user} required="true"/>
 	<input class="button" type="submit" value="sign in" />
 </form>
-

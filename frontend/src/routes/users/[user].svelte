@@ -1,10 +1,10 @@
 <script context="module">
 	export async function preload({ params, query }) {
-		const res = await this.fetch(`http://localhost:3737/contracts/my_token/S?key=${params.slug}`)
+		const res = await this.fetch("http://localhost:3737/contracts/my_token/S?key=" + params.user)
 		const data = await res.json();
 		if (data.value !== 'undefined') this.error(res.status, data.message);
 		if (data.value === null) data.value = 0;
-		return { value: data.value, user: params.slug };
+		return { value: data.value, user: params.user };
 	}
 </script>
 
@@ -49,7 +49,7 @@
 		else alert(data.error)
 	}
 	const refreshBalance = async () => {
-		const res = await fetch(`http://localhost:3737/contracts/my_token/S?key=${user}`)
+		const res = await fetch("http://localhost:3737/contracts/my_token/S?key=" + user)
 		let data = await res.json();
 		value = data.value;
 	}
@@ -87,10 +87,10 @@
 </style>
 
 <svelte:head>
-	<title>{`${user}'s Tokens`}</title>
+	<title>{user + "'s Tokens"}</title>
 </svelte:head>
 
-<h1>{`Hello ${user}!`}</h1>
+<h1>{"Hello " + user + "!"}</h1>
 <h2>Token Balance: {value}</h2>
 
 <form on:submit|preventDefault={send}>
