@@ -100,7 +100,7 @@ async def submit_transaction(request):
     # Get transaction details
     contract_name = request.json.get('contract')
     method_name = request.json.get('method')
-    kwargs = json.loads(request.json.get('args'))
+    kwargs = request.json.get('args')
     sender = request.json.get('sender')
 
     # Set the sender

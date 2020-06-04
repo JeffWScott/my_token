@@ -29,6 +29,7 @@ h1 {
 	font-size:17px;
 	padding:10px 26px;
 	text-decoration:none;
+	max-width: 150px;
 }
 .button:hover {
 	background-color:#343278;

@@ -1,5 +1,8 @@
-The creation of the files in frontend is covered in Part 3a and b of the tutorial series:
-https://blog.lamden.io/a-frontend-for-your-smart-contract-29381108a5d5
+## The creation of the files in frontend is covered this tutorial series:
+### Part 3A 
+https://medium.com/@JeffWScott/python-smart-contract-dev-server-f81bd605a92c
+### Part 3B
+https://blog.lamden.io/a-frontend-for-your-smart-contract-part-b-e28a11dbdd8e
 
 ### Running the project
 

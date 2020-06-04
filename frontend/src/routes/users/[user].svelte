@@ -14,49 +14,52 @@
 	export let value;
 	export let user;
 
-	let to, amount = 0;
+	let receiver = "";
+	let amount = 0;
 
-	const logout = async () => {
-		await goto(`.`);
-	}
-	const send = async () => {
-		if (!to) return
-		if (amount <= 0) return
-
-		let transaction = {
+	const transfer = async () => {
+		const transaction = {
 			sender: user,
 			contract: 'my_token',
 			method: 'transfer',
-			args: JSON.stringify({
-				receiver: to,
+			args: {
+				receiver,
 				amount
-			})
+			}
 		}
 
-		let options = {
+		const options = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(transaction)
 		}
-		let res = await fetch(`http://localhost:3737/`, options)
-		let data = await res.json();
-		if (!data.error) {
+
+		const res = await fetch(`http://localhost:3737/`, options)
+		const data = await res.json();
+		if (data.error) {
+			alert(data.error);
+		}else{
+			alert("You sent " + amount + " token(s) to " + receiver + "!");
 			clearInputs();
 			refreshBalance();
 		}
-		else alert(data.error)
 	}
+
 	const refreshBalance = async () => {
 		const res = await fetch("http://localhost:3737/contracts/my_token/S?key=" + user)
-		let data = await res.json();
+		const data = await res.json();
 		value = data.value;
 	}
 
 	const clearInputs = () => {
-		to = ""
+		receiver = ""
 		amount = 0
+	}
+
+	const logout = () => {
+		goto(`.`);
 	}
 </script>
 
@@ -93,10 +96,10 @@
 <h1>{"Hello " + user + "!"}</h1>
 <h2>Token Balance: {value}</h2>
 
-<form on:submit|preventDefault={send}>
+<form on:submit|preventDefault={transfer}>
 	<h3>Make a transfer</h3>
 	<label for="to">To</label>
-	<input type="text" name="to" bind:value={to} required="true"/>
+	<input type="text" name="to" bind:value={receiver} required="true"/>
 	<label for="amount">Token Amount</label>
 	<input type="number" name="amount" bind:value={amount} required="true"/>
 	<input class="button" type="submit" value="SEND"/>
