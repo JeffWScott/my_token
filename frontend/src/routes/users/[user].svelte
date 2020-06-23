@@ -1,50 +1,41 @@
+<!-- /frontend/src/routes/users/[user].svelte -->
+
 <script context="module">
 	export async function preload({ params, query }) {
-		const res = await this.fetch("http://localhost:3737/contracts/my_token/S?key=" + params.user)
+		const res = await this.fetch("http://167.172.126.5:18080/contracts/con_jeff_token/S?key=" + params.user)
 		const data = await res.json();
-		if (data.value !== 'undefined') this.error(res.status, data.message);
+		if (data.value === 'undefined') this.error(res.status, data.message);
 		if (data.value === null) data.value = 0;
 		return { value: data.value, user: params.user };
 	}
 </script>
 
 <script>
+	import { getContext } from 'svelte'
 	import { goto } from '@sapper/app';
+	import { txResults } from '../../stores'
+
+	const { sendTransaction } = getContext('app_functions')
 
 	export let value;
 	export let user;
 
 	let receiver = "";
 	let amount = 0;
+	let txMessage = ""
 
 	const transfer = async () => {
 		const transaction = {
-			sender: user,
-			contract: 'my_token',
-			method: 'transfer',
-			args: {
+			methodName: 'transfer',
+			networkType: 'testnet',
+			stampLimit: 50000,
+			kwargs: {
 				receiver,
 				amount
 			}
 		}
-
-		const options = {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(transaction)
-		}
-
-		const res = await fetch(`http://localhost:3737/`, options)
-		const data = await res.json();
-		if (data.error) {
-			alert(data.error);
-		}else{
-			alert("You sent " + amount + " token(s) to " + receiver + "!");
-			clearInputs();
-			refreshBalance();
-		}
+		txMessage = "... Sending Transaction ..."
+		sendTransaction(transaction)
 	}
 
 	const refreshBalance = async () => {
@@ -61,6 +52,22 @@
 	const logout = () => {
 		goto(`.`);
 	}
+
+	const processTxResults = (data) => {
+		if (typeof data.txBlockResult.status !== 'undefined'){
+			if (data.txBlockResult.status == 0) {
+				txMessage = "You sent " + amount + " token(s)!";
+				refreshBalance();
+				clearInputs();
+			}else{
+				txMessage = "There was a problem sending your transaction :(";
+			}
+		}
+	}
+
+	txResults.subscribe(results => {
+		if (results.data) processTxResults(results.data)
+	})
 </script>
 
 <style>
@@ -77,13 +84,9 @@
 	form input{
 		margin-bottom: 1rem;
 	}
-	h1{
-		text-transform: capitalize;
-	}
 	h2{
 		color: #2B0029;
 	}
-
 	button{
 		float: right;
 	}
@@ -93,7 +96,7 @@
 	<title>{user + "'s Tokens"}</title>
 </svelte:head>
 
-<h1>{"Hello " + user + "!"}</h1>
+<p><strong>Hello </strong>{user}</p>
 <h2>Token Balance: {value}</h2>
 
 <form on:submit|preventDefault={transfer}>
@@ -102,6 +105,7 @@
 	<input type="text" name="to" bind:value={receiver} required="true"/>
 	<label for="amount">Token Amount</label>
 	<input type="number" name="amount" bind:value={amount} required="true"/>
+	<p>{txMessage}</p>
 	<input class="button" type="submit" value="SEND"/>
 </form>
 
